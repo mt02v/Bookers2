@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
   devise_for :users
-  root to: "homes#top"
-  get 'homes/about' => "homes#about"
-  post 'books' => "books#create"
-
+  resources :books
+  root to: 'layouts#top'
+  get 'users' => 'users#index'
+  get 'home/about' => 'layouts#about'
+  delete '/books' => 'books#destroy'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-resources :post_images, only: [:new]
+  resources :users,only: [:show,:edit,:update]
 
 end
