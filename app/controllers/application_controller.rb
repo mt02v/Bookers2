@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-  before_action :authenticate_user!, except: [:top]
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   def after_sign_in_path_for(resourse)
@@ -16,4 +15,4 @@ class ApplicationController < ActionController::Base
       devise_parameter_sanitizer.permit(:sign_in, keys: [:email])
       devise_parameter_sanitizer.permit(:account_update, keys: [:email])
     end
-  end
+end
