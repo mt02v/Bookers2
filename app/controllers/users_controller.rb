@@ -1,67 +1,41 @@
 class UsersController < ApplicationController
-  
-  before_action :authenticate_use!
-  before_ation :ensure_current_user, {only: [:edit,:update,:destroy]}
-  
-  def new
-    @book = book.new
-  end
-  
+  before_ation :is_matching_login_user, only: [:edit, :update]
   
   def show
-    @book = book.new
+    @book = Book.new
     @user = User.find(params[:id])
-    @books = @user.books
+    @books = @user.books.oeder('updated_at DESC')
   end
   
   def edit
     @user = User.find(params[:id])
   end
-    
-  def new
-    @user = User.new(user_params)
-    if @user.save
-      redirect_to user_path(@user.id)
-    else
-      render "users/sign_up"
-    end
-  end
-  
   
   def index
     @users =User.all
-    @books = Book.all
     @book = Book.new
-    @user = current_user
   end
   
   def update
-    @user =User.find(params[:id])
+    @user = User.find(params[:id])
     if  @user.update(user_params)
-    flash[:notice] = "You have updated user successfully."
-    
-    redirect_to "/users/#{current_user.id}"
-    
+    flash[:notice] = "Your user info has been successfully updated."
+    redirect_to user_path(@user.id)
     else
-    flash[:notice] = "errors prohibited this obj from being saved:"
-    render :edit
+     render :edit
     end
   end
 
 
     private
     
-    def book_params
-      params.require(:book).permit(:title, :body)
-    end
-    
     def user_params
-      params.require(:user).permit(:name,:profile_image,:introduction)
+      params.require(:user).permit(:name, :profile_image, :introduction)
     end
     
     def ensure_current_user
-      @user = User.find(params[:id])
-      if @user.id != current_user.id
+      user_id = params[:id].to_i
+      unless user_id == current_user.id
         redirect_to user_path(current_user.id)
       end
     end
