@@ -1,21 +1,21 @@
 class UsersController < ApplicationController
   before_action :is_matching_login_user, only: [:edit, :update]
-  
+
   def show
     @book = Book.new
     @user = User.find(params[:id])
-    @books = @user.books.order('updated_at DESC')
+    @books = @user.books
   end
-  
+
   def edit
     @user = User.find(params[:id])
   end
-  
+
   def index
     @book = Book.new
     @users = User.all
   end
-  
+
   def update
     @user = User.find(params[:id])
     if  @user.update(user_params)
@@ -28,11 +28,11 @@ class UsersController < ApplicationController
 
 
     private
-    
+
     def user_params
       params.require(:user).permit(:name, :profile_image, :introduction)
     end
-    
+
     def is_matching_login_user
       user_id = params[:id].to_i
       unless user_id == current_user.id
