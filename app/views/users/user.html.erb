@@ -1,16 +1,19 @@
-<div>
-  <%= flash[:notice] %>
-</div>
-
-<%= form_with model: User.new do |f| %>
-  <%= f.text_field :title %>
-<h1>New Book</h1>
-<%= form_with model: User.new do |f| %>
-  <h4>Title</h4>
-  <%= f.text_field :title %>
-  
-  <h4>Opinion</h4>
-  <%= f.text_area :body %>
-  
-  <%= f.submit '投稿' %>
-<% end %>
+<h2>User info</h2>
+<table class = "table">
+  <tbody>
+    <%= image_tag user.get_profile_image, size:"100x100" %>
+    <tr>
+      <th>name</th>
+      <th><%= user.name %></th>
+    </tr>
+    <tr>
+      <th>introduction</th>
+      <th><%= user.introduction %></th>
+    </tr>
+  </tbody>
+</table>
+<button class = "btn btn-outline-secondary btn-block">
+  <%= link_to edit_user_path(user.id) do %>
+    <i class="fas fa-user-cog"></i>
+  <% end %>
+</button>
