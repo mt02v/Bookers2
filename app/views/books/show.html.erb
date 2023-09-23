@@ -3,8 +3,9 @@
 <div class = "container">
   <div class = "row">
     <div class = "col-md-3">
-      <%= render 'users/user_info', user: @user %>
-      <%= render 'new_book', book: @books %>
+      <%= render 'users/user', user: @user %>
+      <%= render 'books/new_book', book: @books %>
+      <%= render 'books/edit', book: @books %>
     </div>
     <div class = "col-md-8 offset-md-1">
       <h2>Book details</h2>

@@ -10,7 +10,6 @@
           <% end %>
         </ul>
       <% end %>
-      <%= image_tag @user.get_profile_image, size:"100x100" %>
       <%= form_with model: @user do |f| %>
         <label for = "inputName">Name</label><br/>
         <%= f.text_field :name, autofocus: true, id:"inputName" %><br/>
