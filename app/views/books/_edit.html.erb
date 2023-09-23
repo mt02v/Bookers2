@@ -2,9 +2,9 @@
   <div class = "row">
     <div class = "col-sm-12 col-md-8 col-lg-5 px-5 px-sm-0 mx-auto">
   <h1>Book detail</h1>
-  
-<% if @book.errors.any? %>  
-<%= @book.errors.count %> errors happened %>
+
+<% if @book.errors.any? %>
+<%= @book.errors.count %>errors happened
 <ul>
     <% @book.errors.full_messages.each do |message| %>
       <li><%= message %></li>
@@ -13,7 +13,7 @@
     <% end %>
 
     <%= form_with model: @book do |f| %>
-      
+
         <label for = "book_title">Title</label><br/>
         <%= f.text_field :title %><br/>
 
@@ -24,9 +24,7 @@
 <%= f.submit "Update Book", class:"btn btn-success"%><br/>
 <% end %>
 
-<%= link_to "show",book_path(@book.id)%>
-<%= link_to "Back",book_path %>
-
+<%= link_to "Show", "/users/#{@user.id}" %>
 </div>
 </div>
 </div>

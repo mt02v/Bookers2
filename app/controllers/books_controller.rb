@@ -6,59 +6,65 @@ class BooksController < ApplicationController
      @book = Book.new(book_params)
      @book.user_id = current_user.id
         if @book.save
+            flash[:notice] = "You have created book successfully."
             redirect_to book_path(@book)
-            flash[:notice] = "Your book has been successfully created!"
-  　else
-  　 @books = Book.all
-  　 render :index
-  　 end
+        else
+           @books = Book.all
+           flash.now[:alert] = "errors prohibited this obj from being saved:"
+            render :index
+        end
    end
 
    def index
-     unless user_signed_in?
-      redirect_to user_session_path
-     end
      @books = Book.all
      @book = Book.new
+     @user = current_user
    end
 
    def show
      unless user_signed_in?
       redirect_to user_session_path
      end
-     @user = @book.new
-     @book = Book.find(params[:id])
-     @book = Book.user
+     @users = User.new
+     @books = Book.find(params[:id])
+     @book_new = Book.new
    end
 
    def edit
      @book = Book.find(params[:id])
-     unless @book.user_id == current_user.id
+     if @book.user_id != current_user.id
+      flash[:alert] = "You don't have permission to edit this book" 
       redirect_to books_path
      end
    end
 
    def update
      @book = Book.find(params[:id])
-     if @book.update(book_params)
-     flash[:notice] = "Your book has been successfully updated!."
-     redirect_to book_path(@book)
-
-     else
-      render :edit
+     if @book.user_id != current_use.id
+       redirect_to book_path(@book)
+       return
      end
+       if @book.update(book_params)
+       flash[:notice] = "You have updated book successfully."
+       redirect_to  book_path(@book.id)
+       else
+      @books = Book.all
+      flash.now[:alert] = "Failed to update the book."
+      render :edit
+       end
    end
 
     def destroy
       @book = Book.find(params[:id])
-    if @book.user == current_user
+    if @book.user_id == current_user.id
       @book.destroy
-      flash[:notice] = "The book has been successfully deleted."
-      redirect_to books_path
+      flash[:notice] = "Book has been deleted successfully."
     else
-      nil
+      flash[:alert] = "You don't have permission to delete this book."
     end
+      redirect_to books_path
     end
+    
         private
 
     def book_params
