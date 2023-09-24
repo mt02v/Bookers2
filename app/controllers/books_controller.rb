@@ -22,18 +22,15 @@ class BooksController < ApplicationController
    end
 
    def show
-     unless user_signed_in?
-      redirect_to user_session_path
-     end
-     @users = User.new
-     @books = Book.find(params[:id])
+     @book = Book.find(params[:id])
+     @user = @book.user
      @book_new = Book.new
    end
 
    def edit
      @book = Book.find(params[:id])
      if @book.user_id != current_user.id
-      flash[:alert] = "You don't have permission to edit this book" 
+      flash[:alert] = "You don't have permission to edit this book"
       redirect_to books_path
      end
    end
@@ -64,7 +61,7 @@ class BooksController < ApplicationController
     end
       redirect_to books_path
     end
-    
+
         private
 
     def book_params
